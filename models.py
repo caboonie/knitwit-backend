@@ -24,3 +24,4 @@ class Pattern(Base):
     pattern_json = Column(String)
     name = Column(String)
     timestamp = Column(String)
+    upload_filename = Column(String)

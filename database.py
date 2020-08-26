@@ -30,7 +30,7 @@ def set_user_token(id_num, token):
 
 def check_token(id_num, token):
     user = session.query(User).filter_by(id=id_num).first()
-    return user.token == token
+    return user != None and user.token == token
 
 
 def add_pattern(user_id, name, pattern_json, timestamp=datetime.now().strftime("%m/%d/%Y, %H:%M:%S")):
@@ -51,10 +51,14 @@ def get_pattern_user_name(user, name):
 def update_pattern(id_num, pattern_json, timestamp=None):
     if timestamp == None:
         timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-    print("UPDATING",timestamp)
     pattern = session.query(Pattern).filter_by(id=id_num).first()
     pattern.pattern_json = pattern_json
     pattern.timestamp = timestamp
+    session.add(pattern)
+    session.commit()
+
+def add_upload(pattern, filename):
+    pattern.upload_filename = filename
     session.add(pattern)
     session.commit()
 
